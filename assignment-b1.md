@@ -69,7 +69,8 @@ In the same code chunk where you made your function, document the function using
     -   (Justification for naming is not often needed, but we want to hear your reasoning.)
 4.  What the function returns, using the `@return` tag.
 
-```{r}
+
+```r
 ## Load relevant packages
 
 suppressPackageStartupMessages(library(datateachr)) # <- data for example
@@ -77,14 +78,14 @@ suppressPackageStartupMessages(library(palmerpenguins))
 suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(testthat))
-
 ```
 
 > **Exercise 1 & 2 : Making a new function and documenting.**
 >
 > Function name: ***count_events***
 
-```{r}
+
+```r
 #' Count Events 
 #'
 #' This function takes a data frame or Tibble, and two variable names as arguments. 
@@ -130,7 +131,6 @@ count_events <- function(data, var1, var2) {
     ungroup()
     return(result)
 }
-
 ```
 
 ## Exercise 3: Include examples (15 points)
@@ -143,33 +143,101 @@ Note: If you want to deliberately show an error, you can use `error = TRUE` in y
 >
 > *Using the penguins data*
 
-```{r}
+
+```r
 # How many penguins of each species per island in the data??
 
 specie_by_island <- count_events(penguins, species, island)
+```
+
+```
+## `summarise()` has grouped output by 'species'. You can override using the
+## `.groups` argument.
+```
+
+```r
 print(specie_by_island)
+```
+
+```
+## # A tibble: 5 × 3
+##   species   island    count
+##   <fct>     <fct>     <int>
+## 1 Adelie    Biscoe       44
+## 2 Adelie    Dream        55
+## 3 Adelie    Torgersen    47
+## 4 Chinstrap Dream        68
+## 5 Gentoo    Biscoe      119
 ```
 
 > *Using the vancouver_tree data*
 
-```{r}
 
+```r
 # How many trees of each species by the different genus names in the data?
 
 tress_by_species <- count_events(vancouver_trees, genus_name, species_name)
-print(tress_by_species)
+```
 
+```
+## `summarise()` has grouped output by 'genus_name'. You can override using the
+## `.groups` argument.
+```
+
+```r
+print(tress_by_species)
+```
+
+```
+## # A tibble: 95 × 3
+##    genus_name species_name   count
+##    <chr>      <chr>          <int>
+##  1 ACER       CAMPESTRE       1104
+##  2 ACER       CAPPADOCICUM     205
+##  3 ACER       FREEMANI   X    3015
+##  4 ACER       NIGRUM            69
+##  5 ACER       PALMATUM         480
+##  6 ACER       PLATANOIDES     4298
+##  7 ACER       PSEUDOPLATANUS    16
+##  8 ACER       RUBRUM          3517
+##  9 ACER       TEGMENTOSUM       11
+## 10 ACER       TRUNCATUM       1469
+## # ℹ 85 more rows
 ```
 
 > *Using the parking_meters data*
 
-```{r}
 
+```r
 # How many meter head types per localization in the data?
 
 headtype_by_location <- count_events(parking_meters, geo_local_area, meter_head)
-print(headtype_by_location)
+```
 
+```
+## `summarise()` has grouped output by 'geo_local_area'. You can override using
+## the `.groups` argument.
+```
+
+```r
+print(headtype_by_location)
+```
+
+```
+## # A tibble: 48 × 3
+##    geo_local_area     meter_head          count
+##    <chr>              <chr>               <int>
+##  1 Arbutus-Ridge      Single Motorbike        1
+##  2 Downtown           Pay Station            16
+##  3 Downtown           Single                  7
+##  4 Downtown           Single / Disability     1
+##  5 Downtown           Single Motorbike       57
+##  6 Downtown           Twin                   17
+##  7 Fairview           Pay Station             2
+##  8 Fairview           Single Motorbike       13
+##  9 Fairview           Twin                    5
+## 10 Grandview-Woodland Pay Station            19
+## # ℹ 38 more rows
 ```
 
 ## Exercise 4: Test the Function (25 points)
@@ -193,8 +261,8 @@ Example of redundant inputs:
 >
 > ***Test 1.*** I will check if my function only accepts data frame or Tibble
 
-```{r}
 
+```r
 test_that("count_events only accepts data frame or Tibble", {
   
 #make a vector to use as a test
@@ -206,14 +274,16 @@ var_test <- "not a dataset"
   expect_error(count_events(n_vector_test, species, island), "Input 'data' must be a data frame or Tibble.") # A vector was used instead of a data frame or tibble, thus an error is expected
   expect_error(count_events(var_test, species, island), "Input 'data' must be a data frame or Tibble.") # A single variable was used instead of a data frame or tibble, thus an error is expected
 })
+```
 
-
+```
+## Test passed 🎉
 ```
 
 > ***Test 2.*** I will check if my function handles invalid inputs for var1 and var2
 
-```{r}
 
+```r
 test_that("count_events function handles invalid input", {
   
 #make a variable not present in the dataset
@@ -225,13 +295,16 @@ var3 <- c(1, 2, 3, 4, 5)
   expect_error(count_events(penguins, var3, island), "Variables 'var1' must exist in the input data.") # var3 is not in the dataset, thus an error is expected for var1
   expect_error(count_events(penguins, species, var3), "Variables 'var2' must exist in the input data.") # var3 is not in the dataset, thus an error is expected for var2
 })
+```
 
+```
+## Test passed 🌈
 ```
 
 > ***Test 3.*** I will check if the function correctly counts events by 'var1' and 'var2'
 
-```{r}
 
+```r
 test_that("count_events function correctly counts events", {
   
   # Make a sample dataset
@@ -244,13 +317,16 @@ test_that("count_events function correctly counts events", {
   # Check if the result contains the expected counts
   expect_equal(result$count, c(1, 2, 2, 1))  #expect X:A = 1; X:B = 2; expect Y:A = 2; Y:B = 1;
 })
+```
 
+```
+## Test passed 🎊
 ```
 
 > ***Test 4.*** I will check if the function handles NA values correctly
 
-```{r}
 
+```r
 test_that("count_events function NA test", {
   
   # Make a sample dataset
@@ -263,5 +339,8 @@ test_that("count_events function NA test", {
   # Check if the result contains the expected counts
   expect_equal(result$count, c(1, 2, 1))  #expect minus one row and minus one count for "Y"
 })
+```
 
+```
+## Test passed 🌈
 ```
