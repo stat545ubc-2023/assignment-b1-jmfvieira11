@@ -1,9 +1,3 @@
----
-output: 
-  html_document:
-    keep_md: true
----
-
 # Assignment B-1: Making a function
 
 *\~Juliana Vieira*\
